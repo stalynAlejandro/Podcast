@@ -18,7 +18,8 @@
 			},
 			"suspicious": {
 				"noConsoleLog": "off",
-				"noExplicitAny": "off"
+				"noExplicitAny": "off",
+				"noShadowRestrictedNames": "off"
 			},
 			"correctness": { "noChildrenProp": "off" }
 		}
