@@ -1,0 +1,21 @@
+.landing {
+    padding: 20px;
+    /* font-family: Arial, sans-serif; */
+}
+
+.filter{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 40px;
+}
+
+.grid-podcast {
+    padding: 35px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    row-gap: 40px;
+    column-gap: 20px;
+}
+
