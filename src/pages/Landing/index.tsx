@@ -1,22 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { fetchPodcasts } from "../../services/indext";
 import { Filter, PodcastCard } from "../../components";
-import { useEffect, useState } from "react";
-import { Podcast, PodcastEntry } from "../../../types";
+import { PodcastEntry } from "../../../types";
+import { useFetchPodcats } from "../../hooks/useFetchPodcasts";
 import "./style.css"
 
 export const Landing = () => {
-    const [pods, setPods] = useState<Podcast>()
-
-    const getPodcast = async () => {
-        const podcast = await fetchPodcasts();
-        setPods(podcast)
-    }
-
-    useEffect(() => {
-        getPodcast()
-    }, [])
-
+    const pods = useFetchPodcats()
 
     return (
         <div className="landing">
