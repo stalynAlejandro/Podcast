@@ -10,6 +10,9 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+            "a11y":{
+                "useKeyWithClickEvents": "off"
+            },
 			"complexity": {
 				"noUselessFragments": "off"
 			},
@@ -17,6 +20,7 @@
 				"noParameterAssign": "off",
 				"noNonNullAssertion": "off",
 				"useNamingConvention": "off",
+                "useImportType":"off",
 				"useSingleVarDeclarator": "off"
 			},
 			"suspicious": {
@@ -24,7 +28,10 @@
 				"noExplicitAny": "off",
 				"noShadowRestrictedNames": "off"
 			},
-			"correctness": { "noChildrenProp": "off" }
+			"correctness": { 
+                "noChildrenProp": "off", 
+                "useExhaustiveDependencies":"off" 
+            }
 		}
 	}
 }

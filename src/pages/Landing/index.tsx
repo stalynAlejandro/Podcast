@@ -1,33 +1,36 @@
 import { useNavigate } from "react-router-dom";
+import { fetchPodcasts } from "../../services/indext";
 import { Filter, PodcastCard } from "../../components";
+import { useEffect, useState } from "react";
+import { Podcast, PodcastEntry } from "../../../types";
 import "./style.css"
 
-const podcastData = [
-    { id: 1, title: "ALL SONGS CONSIDERED", author: "NPR", image: "all-songs-considered.jpg" },
-    { id: 2, title: "KEXP SONG OF THE DAY", author: "KEXP", image: "kexp-song-of-the-day.jpg" },
-    { id: 3, title: "SONG EXPLODER", author: "Song Exploder", image: "song-exploder.jpg" },
-    { id: 4, title: "MUSIC ON FIRE PODCAST", author: "georges dagher", image: "music-on-fire.jpg" },
-    { id: 5, title: "SOUND OPINIONS", author: "WBEZ Chicago", image: "sound-opinions.jpg" },
-    { id: 6, title: "TINY DESK CONCERTS - VIDEO", author: "NPR", image: "tiny-desk-concerts.jpg" },
-    { id: 7, title: "CLUBLIFE BY TIËSTO", author: "Tiësto", image: "clublife-by-tiesto.jpg" },
-    { id: 8, title: "ABOVE & BEYOND: GROUP THERAPY", author: "Above & Beyond", image: "above-and-beyond.jpg" },
-];
-
 export const Landing = () => {
-    const navigate = useNavigate();
+    const [pods, setPods] = useState<Podcast>()
+
+    const getPodcast = async () => {
+        const podcast = await fetchPodcasts();
+        setPods(podcast)
+    }
+
+    useEffect(() => {
+        getPodcast()
+    }, [])
+
 
     return (
         <div className="landing">
             <div className="filter">
-                <Filter />
+                <Filter count={pods?.feed?.entry?.length || 0} />
             </div>
             <div className="grid-podcast">
-                {podcastData.map((podcast) => (
+                {pods?.feed?.entry?.map((podcast: PodcastEntry) => (
                     <PodcastCard
-                        key={podcast?.id}
-                        title={podcast?.title}
-                        author={podcast?.author}
-                        image={podcast?.image}
+                        key={podcast?.id?.attributes["im:id"] || ''}
+                        podId={podcast?.id?.attributes["im:id"] || ''}
+                        title={podcast["im:name"]?.label || ''}
+                        author={podcast["im:artist"]?.label || ''}
+                        image={podcast["im:image"][0]?.label || ''}
                     />
                 ))}
             </div>
