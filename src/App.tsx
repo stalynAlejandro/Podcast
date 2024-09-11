@@ -1,10 +1,13 @@
 import { router } from "./routes";
 import { Provider } from "react-redux";
-import { useAppState } from "./hooks/useAppState";
 import { RouterProvider } from "react-router-dom";
+import { emptyStore } from "./store/redux";
+import _ from "lodash";
+import { saveState } from "./store/async";
 
 function App() {
-    const store = useAppState();
+    const store = emptyStore
+    store.subscribe(() => saveState(store.getState()));
 
     return (
         <Provider store={store}>

@@ -7,19 +7,19 @@ const initialState: IPodcastSlice = {
             entry: []
         },
     },
-    lastModified: undefined
+    lastModified: ''
 };
 
 interface IPodcastSlice {
     pods: Podcast;
-    lastModified: string | undefined
+    lastModified: string
 }
 
 const podcastSlice = createSlice({
     name: 'podcast',
     initialState,
     reducers: {
-        setPodcast(state, action: PayloadAction<{pods: Podcast; lastModified: string}>) {
+        setPodcast(state, action: PayloadAction<{ pods: Podcast; lastModified: string }>) {
             state.pods = action.payload.pods
             state.lastModified = action.payload.lastModified
         }

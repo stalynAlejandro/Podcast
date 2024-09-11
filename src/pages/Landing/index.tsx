@@ -1,18 +1,27 @@
 import { Filter, PodcastCard } from "../../components";
 import { PodcastEntry } from "../../../types";
-import { useFetchPodcats } from "../../hooks/useFetchPodcasts";
 import "./style.css"
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/redux";
+import { useState } from "react";
 
 export const Landing = () => {
-    const pods = useFetchPodcats()
+    const pods = useSelector((state: RootState) => state.podcasts.pods)
+    const [filterText, setFilterText] = useState<string>('');
+
+    const filteredPods = pods?.feed?.entry?.filter((podcast: PodcastEntry) => {
+        const titleMatch = podcast["im:name"]?.label.toLowerCase().includes(filterText.toLowerCase());
+        const authorMatch = podcast["im:artist"]?.label.toLowerCase().includes(filterText.toLowerCase());
+        return titleMatch || authorMatch;
+    });
 
     return (
         <div className="landing">
             <div className="filter">
-                <Filter count={pods?.feed?.entry?.length || 0} />
+                <Filter count={filteredPods?.length || 0} setFilterText={setFilterText} />
             </div>
             <div className="grid-podcast">
-                {pods?.feed?.entry?.map((podcast: PodcastEntry) => (
+                {filteredPods?.map((podcast: PodcastEntry) => (
                     <PodcastCard
                         key={podcast?.id?.attributes["im:id"] || ''}
                         podId={podcast?.id?.attributes["im:id"] || ''}

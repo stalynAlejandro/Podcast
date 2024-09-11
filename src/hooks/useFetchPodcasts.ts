@@ -1,24 +1,23 @@
-import { Podcast } from "../../types";
+import { useEffect } from "react";
 import { isSameDay } from "../utils";
+import { loadState } from "../store/async";
 import { setPodcast } from "../store/redux/podcast";
-import { useSelector } from "react-redux";
 import { fetchPodcasts } from "../services/indext";
-import { useEffect, useState } from "react";
-import { RootState, useAppDispatch } from "../store/redux";
+import { useAppDispatch } from "../store/redux";
+import _ from "lodash";
 
-export const useFetchPodcats = (): Podcast | undefined => {
+export const useFetchPodcats = () => {
     const dispatch = useAppDispatch()
-    const [pod, setPod] = useState<Podcast>()
-    const { pods, lastModified } = useSelector((state: RootState) => state.podcasts);
 
     const getPodcast = async () => {
         const today = new Date()
-        if (isSameDay(new Date(lastModified as string), today)) setPod(pods)
-        else {
+        const localStorage = await loadState();
+        if (_.isEmpty(localStorage) || !isSameDay(new Date(localStorage?.podcasts?.lastModified), today)) {
             await fetchPodcasts().then((p) => {
                 dispatch(setPodcast({ pods: p, lastModified: today.toString() }))
-                setPod(p)
             });
+        } else {
+            dispatch(setPodcast({ pods: localStorage?.podcasts?.pods, lastModified: localStorage?.podcasts?.lastModified }))
         }
     }
 
@@ -26,5 +25,4 @@ export const useFetchPodcats = (): Podcast | undefined => {
         getPodcast()
     }, [])
 
-    return pod
 }
